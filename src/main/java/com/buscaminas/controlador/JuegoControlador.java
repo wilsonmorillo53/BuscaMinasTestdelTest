@@ -23,10 +23,12 @@ public class JuegoControlador {
         boolean salir = false;
         while (!salir) {
             vista.mostrarMensaje("=== MENÚ DE VIDEOJUEGO ===");
-            vista.mostrarMensaje("1. Jugar Partida");
-            vista.mostrarMensaje("2. Cargar Partidas");
-            vista.mostrarMensaje("3. Creadores del Juego");
-            vista.mostrarMensaje("4. Salir");
+            vista.mostrarMensaje("= 1. Jugar Partida       =");
+            vista.mostrarMensaje("= 2. Cargar Partidas     =");
+            vista.mostrarMensaje("= 3. Creadores del Juego =");
+            vista.mostrarMensaje("= 4. Salir               =");
+            vista.mostrarMensaje 
+            ("==============================================");
             System.out.print("> ");
             String input = scanner.nextLine().trim();
             switch (input) {

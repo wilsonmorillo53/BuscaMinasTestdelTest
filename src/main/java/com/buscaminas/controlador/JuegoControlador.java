@@ -28,7 +28,8 @@ public class JuegoControlador {
             vista.mostrarMensaje("= 3. Creadores del Juego =");
             vista.mostrarMensaje("= 4. Salir               =");
             vista.mostrarMensaje 
-            ("==============================================");
+            ("===============================================");
+            vista.mostrarMensaje("===========================");
             System.out.print("> ");
             String input = scanner.nextLine().trim();
             switch (input) {

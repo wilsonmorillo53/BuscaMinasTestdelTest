@@ -22,8 +22,8 @@ public class JuegoControlador {
     public void iniciar() {
         boolean salir = false;
         while (!salir) {
-            vista.mostrarMensaje("=== MENÚ DE VIDEOJUEGO ===");
-            vista.mostrarMensaje("1. Jugar Partida");
+            vista.mostrarMensaje("=== MENÚ DEL VIDEOJUEGO ===");
+            vista.mostrarMensaje("1. Comenzar Partida");
             vista.mostrarMensaje("2. Cargar Partidas");
             vista.mostrarMensaje("3. Creadores del Juego");
             vista.mostrarMensaje("4. Salir");

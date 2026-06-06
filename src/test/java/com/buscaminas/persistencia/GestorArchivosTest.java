@@ -2,55 +2,84 @@ package test.java.com.buscaminas.persistencia;
 
 import main.java.com.buscaminas.modelo.Tablero;
 import main.java.com.buscaminas.persistencia.GestorArchivos;
+
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class GestorArchivosTest {
+
+    private static final String ARCHIVO_PRUEBA = "partida.ser";
+
     private GestorArchivos gestor;
-    private Tablero tableroOriginal;
-    private static final String TEST_FILE = "test_partida.ser";
+    private Tablero tablero;
 
     @BeforeEach
-    void setUp() {
+    void inicializar() {
         gestor = new GestorArchivos();
-        tableroOriginal = new Tablero();
-        // Opcional: cambiar el nombre del archivo para no interferir con el original
-        // En un entorno real se podría modificar GestorArchivos para permitir ruta, pero aquí usamos el predeterminado
+        tablero = new Tablero();
     }
 
     @AfterEach
-    void limpiar() {
-        File f = new File("partida.ser");
-        if (f.exists()) f.delete();
+    void eliminarArchivoPrueba() {
+        File archivo = new File(ARCHIVO_PRUEBA);
+
+        if (archivo.exists()) {
+            assertTrue(archivo.delete());
+        }
     }
 
     @Test
-    void testGuardarYCargar() {
-        assertTrue(gestor.guardarPartida(tableroOriginal));
-        Tablero cargado = gestor.cargarPartida();
-        assertNotNull(cargado);
-        assertEquals(tableroOriginal.getTamano(), cargado.getTamano());
-        // Verificar que alguna mina coincida (no es exacto porque la colocación es aleatoria)
-        // En su lugar, verificamos que el tablero cargado no sea el mismo objeto pero tiene estructura
-        assertNotSame(tableroOriginal, cargado);
+    @DisplayName("Debe guardar y cargar correctamente una partida")
+    void debeGuardarYCargarPartida() {
+
+        boolean guardado = gestor.guardarPartida(tablero);
+
+        assertTrue(guardado);
+
+        Tablero tableroCargado = gestor.cargarPartida();
+
+        assertNotNull(tableroCargado);
+        assertNotSame(tablero, tableroCargado);
+        assertEquals(
+                tablero.getTamano(),
+                tableroCargado.getTamano()
+        );
     }
 
     @Test
-    void testCargarArchivoInexistente() {
-        File f = new File("partida.ser");
-        if (f.exists()) f.delete();
-        Tablero cargado = gestor.cargarPartida();
-        assertNull(cargado);
+    @DisplayName("Debe retornar null cuando el archivo no existe")
+    void debeRetornarNullSiArchivoNoExiste() {
+
+        File archivo = new File(ARCHIVO_PRUEBA);
+
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        Tablero tableroCargado = gestor.cargarPartida();
+
+        assertNull(tableroCargado);
     }
 
     @Test
-    void testGuardarSobrescribe() {
-        gestor.guardarPartida(tableroOriginal);
-        Tablero otro = new Tablero();
-        gestor.guardarPartida(otro);
-        Tablero cargado = gestor.cargarPartida();
-        // No podemos comparar contenido directamente, pero al menos no lanza excepción
-        assertNotNull(cargado);
+    @DisplayName("Debe sobrescribir una partida existente")
+    void debeSobrescribirPartidaExistente() {
+
+        assertTrue(gestor.guardarPartida(tablero));
+
+        Tablero nuevoTablero = new Tablero();
+
+        assertTrue(gestor.guardarPartida(nuevoTablero));
+
+        Tablero tableroCargado = gestor.cargarPartida();
+
+        assertNotNull(tableroCargado);
+        assertEquals(
+                nuevoTablero.getTamano(),
+                tableroCargado.getTamano()
+        );
     }
 }
